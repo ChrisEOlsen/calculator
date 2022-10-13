@@ -39,48 +39,71 @@
     let fullNum = [];
     let partNum = [];
     let currentOperator;
+    let lastOperator;
     let equalsPressed = false;
-    let nextOperator = null;
-    let lastOperator = [];
+    let operatorActive = false;
         
         //screen
         const screen = document.querySelector('.screen');
+        //clear and del button events
+        const clearBtn = document.querySelector('.clear');
+              clearBtn.addEventListener('click', () => {
+                
+              });
+        const delBtn = document.querySelector('.del');
+              delBtn.addEventListener('click', () => {
+                fullNum = [];
+                partNum = [];
+                lastOperator = [];
+                equalsPressed = false;
+                screen.textContent = '';
+              });
+        
         //numbers and number events
         const numButtons = document.querySelectorAll('#num'); 
-        numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
+              numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
         //operators and operator events
         const operatorButtons = document.querySelectorAll('#op'); 
-        operatorButtons.forEach(a => a.addEventListener('click', () => {
-            if(a.dataset.key != '=' && a.dataset.key != '.'){
-                equalsPressed = false;
-                currentOperator = a.dataset.key;
-                createEquation();
-            }
-            else if (a.dataset.key == '='){
-                equalsPressed = true;
-                createEquation();
-            }
-            else if (a.dataset.key == '.'){
-                if(!partNum.includes('.') && partNum[0] != undefined){
-                    partNum.push('.'); screen.textContent += '.';
-                }
-            }
-        }));
+              operatorButtons.forEach(a => a.addEventListener('click', () => {
+                    if(a.dataset.key != '=' && a.dataset.key != '.'){ // operators
+                        equalsPressed = false;
+                        currentOperator = a.dataset.key;
+                        createEquation();
+                        operatorActive = true;
+                    }
+                    else if (a.dataset.key == '=' && !equalsPressed){ // equals
+                        equalsPressed = true;
+                        createEquation();
+                    }
+                    else if (a.dataset.key == '.'){
+                        if(!partNum.includes('.') && partNum[0] != undefined){ // deciaml
+                            partNum.push('.'); screen.textContent += '.';
+                        }
+                    }
+              }));
+
 
     function createEquation(){
         if(currentOperator == undefined) return;
         if(partNum[0] !== undefined)fullNum.push(partNum.join(''));
-        if(fullNum[0] != undefined)screen.textContent += currentOperator;
-        lastOperator.push(currentOperator);
+        if(fullNum[0] !== undefined && !operatorActive){
+            screen.textContent += currentOperator;
+            lastOperator = currentOperator;
+        }
         partNum = [];
 
         if(fullNum[1] !== undefined){
-            let answer = operate(lastOperator[0], fullNum[0], fullNum[1]);
+            let answer = operate(lastOperator, fullNum[0], fullNum[1]);
             fullNum = [];
             fullNum.push(answer);
-            equalsPressed == true ? screen.textContent = '=' + answer 
-                                  : screen.textContent = '=' + answer + currentOperator;
-            lastOperator[0] = currentOperator;
+            if(equalsPressed){
+                screen.textContent = '=' + answer;
+                lastOperator = [];
+            }else if (!equalsPressed){
+                screen.textContent = '=' + answer + currentOperator;
+                lastOperator = currentOperator;
+            }
+            operatorActive = false;
         }
         else return;
     }
