@@ -48,8 +48,21 @@
         //clear and del button events
         const clearBtn = document.querySelector('.clear');
               clearBtn.addEventListener('click', () => {
-                
-              });
+                fullNum = [];
+                partNum = [];
+                const screenContentArr = screen.textContent.split('');
+                screenContentArr.pop();
+                console.log(screenContentArr);
+                //see the new values of fullNum
+                const operatorFound = (element) => 
+                element == '+' || element == '-' || element == '*' || element == '/';
+                if(operatorFound != undefined){
+                    for (let i = 0; i < screenContentArr.findIndex(operatorFound); i++){
+                    fullNum.push(screenContentArr[i]);
+                }
+                }
+                screen.textContent = screen.textContent.slice(0, screen.textContent.length - 1);
+            });
         const delBtn = document.querySelector('.del');
               delBtn.addEventListener('click', () => {
                 fullNum = [];
