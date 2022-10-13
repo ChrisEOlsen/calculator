@@ -5,8 +5,94 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <div class="case">
+        <div class="screen"></div>
+            <div class="button-container">
+                <button class="clear">CLEAR</button>
+                <button class="del">DELETE</button>
+                <button id="num" data-key="7">7</button>
+                <button id="num" data-key="8">8</button>
+                <button id="num" data-key="9">9</button>
+                <button id="op" data-key="/">\</button>
+                <button id="num" data-key="4">4</button>
+                <button id="num" data-key="5">5</button>
+                <button id="num" data-key="6">6</button>
+                <button id="op" data-key="*">x</button>
+                <button id="num" data-key="1">1</button>
+                <button id="num" data-key="2">2</button>
+                <button id="num" data-key="3">3</button>
+                <button id="op" data-key="-">-</button>
+                <button id="op" data-key=".">.</button>
+                <button id="num" data-key="0">0</button>
+                <button id="op" data-key="=">=</button>
+                <button id="op" data-key="+">+</button>
+        </div>
+    </div>
+
+
+
+    <script>
+
+    let fullNum = [];
+    let partNum = [];
+    let currentOperator;
+    let equalsPressed = false;
+    let nextOperator = null;
+    let lastOperator = [];
+        
+        //screen
+        const screen = document.querySelector('.screen');
+        //numbers and number events
+        const numButtons = document.querySelectorAll('#num'); 
+        numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
+        //operators and operator events
+        const operatorButtons = document.querySelectorAll('#op'); 
+        operatorButtons.forEach(a => a.addEventListener('click', () => {
+            if(a.dataset.key != '=' && a.dataset.key != '.'){
+                equalsPressed = false;
+                currentOperator = a.dataset.key;
+                createEquation();
+            }
+            else if (a.dataset.key == '='){
+                equalsPressed = true;
+                createEquation();
+            }
+            else if (a.dataset.key == '.'){
+                if(!partNum.includes('.') && partNum[0] != undefined){
+                    partNum.push('.'); screen.textContent += '.';
+                }
+            }
+        }));
+
+    function createEquation(){
+        if(currentOperator == undefined) return;
+        if(partNum[0] !== undefined)fullNum.push(partNum.join(''));
+        if(fullNum[0] != undefined)screen.textContent += currentOperator;
+        lastOperator.push(currentOperator);
+        partNum = [];
+
+        if(fullNum[1] !== undefined){
+            let answer = operate(lastOperator[0], fullNum[0], fullNum[1]);
+            fullNum = [];
+            fullNum.push(answer);
+            equalsPressed == true ? screen.textContent = '=' + answer 
+                                  : screen.textContent = '=' + answer + currentOperator;
+            lastOperator[0] = currentOperator;
+        }
+        else return;
+    }
+
+    function operate(operator, num1, num2){
+        if(fullNum[1] == undefined) return;
+             if(operator == '+'){return +num1 + +num2}
+        else if(operator == '-'){return +num1 - +num2}
+        else if(operator == '*'){return +num1 * +num2}
+        else if(operator == '/'){return +num1 / +num2}
+    }
+    </script>
+
 </body>
 </html>
