@@ -55,12 +55,17 @@
                 console.log(screenContentArr);
                 //see the new values of fullNum
                 const operatorFound = (element) => 
-                element == '+' || element == '-' || element == '*' || element == '/';
-                if(operatorFound != undefined){
-                    for (let i = 0; i < screenContentArr.findIndex(operatorFound); i++){
-                    fullNum.push(screenContentArr[i]);
+                element == '+' || element == '-' || element == '*' || element == '/' || element == '=';
+                for (let i = 0; i < screenContentArr.findIndex(operatorFound); i++){
+                    partNum.push(screenContentArr[i]);
                 }
+                fullNum.push(partNum.join(''));
+                partNum = [];
+                for (let i = screenContentArr.findIndex(operatorFound) + 1; i < screenContentArr.length; i++){
+                    partNum.push(screenContentArr[i]);
                 }
+                fullNum.push(partNum.join(''));
+                console.log(fullNum);
                 screen.textContent = screen.textContent.slice(0, screen.textContent.length - 1);
             });
         const delBtn = document.querySelector('.del');
@@ -93,6 +98,7 @@
                             partNum.push('.'); screen.textContent += '.';
                         }
                     }
+                    console.log(fullNum);
               }));
 
 
