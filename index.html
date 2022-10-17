@@ -63,7 +63,7 @@
                     screen.textContent = '';
                 }
                 for (let i = 0; i < screen.textContent.length; i++){ // recreate equation based on text on screen
-                    if(screen.textContent[i] == '+' || screen.textContent[i] == '-' || screen.textContent[i] == '/'  |screen.textContent[i] == '*'){
+                    if(screen.textContent[i] == '+' || screen.textContent[i] == '-' || screen.textContent[i] == '/'  ||screen.textContent[i] == '*'){
                         currentOperator = screen.textContent[i];
                         saveIndex = i;
                     }
