@@ -48,32 +48,47 @@
         //clear and del button events
         const clearBtn = document.querySelector('.clear');
               clearBtn.addEventListener('click', () => {
+                if(screen.textContent == '') return;
+                let tempArr = screen.textContent.split(''); // save content
+                tempArr.pop();
+                if(tempArr[0] == '=') tempArr.shift();
+                screen.textContent = tempArr.join('');
+                let saveIndex;
                 fullNum = [];
                 partNum = [];
-                const screenContentArr = screen.textContent.split('');
-                screenContentArr.pop();
-                console.log(screenContentArr);
-                //see the new values of fullNum
-                const operatorFound = (element) => 
-                element == '+' || element == '-' || element == '*' || element == '/' || element == '=';
-                for (let i = 0; i < screenContentArr.findIndex(operatorFound); i++){
-                    partNum.push(screenContentArr[i]);
+                if(equalsPressed == true){
+                    fullNum = [];
+                    partNum = [];
+                    equalsPressed = false;
+                    screen.textContent = '';
                 }
-                fullNum.push(partNum.join(''));
-                partNum = [];
-                for (let i = screenContentArr.findIndex(operatorFound) + 1; i < screenContentArr.length; i++){
-                    partNum.push(screenContentArr[i]);
+                for (let i = 0; i < screen.textContent.length; i++){ // recreate equation based on text on screen
+                    if(screen.textContent[i] == '+' || screen.textContent[i] == '-' || screen.textContent[i] == '/'  |screen.textContent[i] == '*'){
+                        currentOperator = screen.textContent[i];
+                        saveIndex = i;
+                    }
                 }
-                fullNum.push(partNum.join(''));
+                if(saveIndex != undefined){
+                    for (let i = 0; i < screen.textContent.length; i++){ if(i < saveIndex) partNum.push(tempArr[i]);}
+                    fullNum.push(partNum.join(''));
+                    partNum = [];
+                    for (let i = 0; i < screen.textContent.length; i++){ if(i > saveIndex) partNum.push(tempArr[i]);}
+                    fullNum.push(partNum.join(''));
+                    partNum = [];
+                }else if(saveIndex == undefined){
+                    fullNum.push(screen.textContent);
+                    operatorActive = false;
+                }
+                if(fullNum[1] == '') fullNum.pop();
+                if(fullNum[0] == '') fullNum.shift();
                 console.log(fullNum);
-                screen.textContent = screen.textContent.slice(0, screen.textContent.length - 1);
             });
         const delBtn = document.querySelector('.del');
               delBtn.addEventListener('click', () => {
                 fullNum = [];
                 partNum = [];
-                lastOperator = [];
                 equalsPressed = false;
+                operatorActive = false;
                 screen.textContent = '';
               });
         
