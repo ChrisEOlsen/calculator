@@ -90,6 +90,14 @@
         const numButtons = document.querySelectorAll('#num'); 
               numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
     
+        function handleKeys (e){
+            const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+            let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
+            if(!onlyNums.includes(e.key)) return;
+            screen.textContent += e.key; partNum.push(e.key);
+        }
+        window.addEventListener('keydown', handleKeys);
+
         //operators and operator events
         const operatorButtons = document.querySelectorAll('#op'); 
               operatorButtons.forEach(a => a.addEventListener('click', () => {
