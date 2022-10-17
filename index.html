@@ -51,17 +51,11 @@
                 if(screen.textContent == '') return;
                 let tempArr = screen.textContent.split(''); // save content
                 tempArr.pop();
-                if(tempArr[0] == '=') tempArr.shift();
+                if(tempArr[0] == '=') tempArr.shift(); // allows for erasing of single digits from answer already given, and can be used for next equation
                 screen.textContent = tempArr.join('');
-                let saveIndex;
                 fullNum = [];
                 partNum = [];
-                if(equalsPressed == true){
-                    fullNum = [];
-                    partNum = [];
-                    equalsPressed = false;
-                    screen.textContent = '';
-                }
+                let saveIndex;
                 for (let i = 0; i < screen.textContent.length; i++){ // recreate equation based on text on screen
                     if(screen.textContent[i] == '+' || screen.textContent[i] == '-' || screen.textContent[i] == '/'  ||screen.textContent[i] == '*'){
                         currentOperator = screen.textContent[i];
@@ -95,6 +89,7 @@
         //numbers and number events
         const numButtons = document.querySelectorAll('#num'); 
               numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
+    
         //operators and operator events
         const operatorButtons = document.querySelectorAll('#op'); 
               operatorButtons.forEach(a => a.addEventListener('click', () => {
