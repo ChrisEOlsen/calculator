@@ -46,7 +46,7 @@
         //screen
         const screen = document.querySelector('.screen');
         //clear and del button events
-        const clearBtn = document.querySelector('.clear');
+        const clearBtn = document.querySelector('.clear'); //An alternative to this method is to have partNum arrays push into a seperate inputHistory array. 
               clearBtn.addEventListener('click', () => {
                 if(screen.textContent == '') return;
                 let tempArr = screen.textContent.split(''); // save content
@@ -117,14 +117,14 @@
               }));
 
 
-    function createEquation(){
+    function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
         if(partNum[0] !== undefined)fullNum.push(partNum.join(''));
         if(fullNum[0] !== undefined && !operatorActive){
             screen.textContent += currentOperator;
             lastOperator = currentOperator;
         }
-        partNum = [];
+        partNum = []; //important that partNum is emptied
 
         if(fullNum[1] !== undefined){
             let answer = operate(lastOperator, fullNum[0], fullNum[1]);
