@@ -36,7 +36,7 @@
 
     <script>
 
-    let fullNum = [];
+    let fullNum = []; //This array should never exceed two items
     let partNum = [];
     let currentOperator;
     let lastOperator;
@@ -79,8 +79,8 @@
                     fullNum.push(screen.textContent);
                     operatorActive = false;
                 }
-                if(fullNum[1] == '') fullNum.pop();
-                if(fullNum[0] == '') fullNum.shift();
+                if(fullNum[1] == '') fullNum.pop(); //Since the numbers get turned into strings when pushed into array, when emptied they are equal to "" instead of undefined.    
+                if(fullNum[0] == '') fullNum.shift(); //these two lines are an easy bandade fix to this problem
                 console.log(fullNum);
             });
         const delBtn = document.querySelector('.del');
