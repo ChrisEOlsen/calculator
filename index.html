@@ -101,9 +101,13 @@
                 screen.textContent = tempArr.join('');
                 fullNum = [];
                 partNum = [];
-                const isOperator = (element) => element == '+' || element == '-' || element == '*' || element == '/'; 
-                let saveIndex = tempArr.findIndex(isOperator);
-                currentOperator = tempArr.find(isOperator);
+                let saveIndex;
+                for (let i = 0; i < screen.textContent.length; i++){ // recreate equation based on text on screen
+                    if(screen.textContent[i] == '+' || screen.textContent[i] == '-' || screen.textContent[i] == '/'  ||screen.textContent[i] == '*'){
+                        currentOperator = screen.textContent[i];
+                        saveIndex = i;
+                    }
+                }
                 if(saveIndex != undefined){
                     for (let i = 0; i < screen.textContent.length; i++){ if(i < saveIndex) partNum.push(tempArr[i]);}
                     fullNum.push(partNum.join(''));
