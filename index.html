@@ -69,6 +69,7 @@
             if(e.key == 'Backspace') clearUsed();
             if(operators.includes(e.key)) operatorUsed(e.key);
             if(e.key == 'Enter' & !equalsPressed) equalsUsed();
+            if(e.key == '.') decimalUsed();
             if(!onlyNums.includes(e.key)) return;
             screen.textContent += e.key; partNum.push(e.key);
         }
@@ -92,7 +93,7 @@
         equalsPressed = true;
         createEquation();
     }
-    function deciamlUsed(){
+    function decimalUsed(){
         if(!partNum.includes('.') && partNum[0] != undefined){
             partNum.push('.'); screen.textContent += '.';}
     }
@@ -140,10 +141,11 @@
             fullNum = [];
             fullNum.push(answer);
             if(equalsPressed){
-                screen.textContent = '=' + answer;
+                screen.textContent = '=' + Number(answer.toFixed(4));
                 lastOperator = [];
+                equalsPressed = false;
             }else if (!equalsPressed){
-                screen.textContent = '=' + answer + currentOperator;
+                screen.textContent = '=' + Number(answer.toFixed(4)) + currentOperator;
                 lastOperator = currentOperator;
             }
             operatorActive = false;
