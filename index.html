@@ -62,9 +62,9 @@
             if(e.key == 'Enter' && !equalsPressed) equalsUsed();
             if(e.key == '.') decimalUsed();
             if(operators.includes(e.key)) operatorUsed(e.key);
-            if(!onlyNums.includes(e.key)) return;
-            screen.textContent += e.key; partNum.push(e.key);
-            console.log('partNum = ' + partNum);
+            if(onlyNums.includes(e.key)){if(fullNum[1] != undefined && operatorActive){fullNum[1] += e.key;} screen.textContent += e.key; partNum.push(e.key);}
+            console.log(partNum);
+            console.log(fullNum);
         }
         window.addEventListener('keydown', handleKeys);
 
@@ -117,13 +117,12 @@
                     fullNum.push(partNum.join(''));
                 }else if(saveIndex == undefined){
                     fullNum.push(screen.textContent);
-                    partNum = [];
                     operatorActive = false;
                 }
                 if(fullNum[1] == '') fullNum.pop(); //Since the numbers get turned into strings when pushed into array, when emptied they are equal to "" instead of undefined.    
                 if(fullNum[0] == '') fullNum.shift(); //these two lines are an easy bandade fix to this problem
-                console.log('partNum = ' + partNum);
-                console.log('fullNum = ' + fullNum);
+                console.log(partNum);
+                console.log(fullNum);
     }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
