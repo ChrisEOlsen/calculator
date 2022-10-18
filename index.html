@@ -47,27 +47,24 @@
               clearBtn.addEventListener('click', clearUsed);
 
         const delBtn = document.querySelector('.del');
-              delBtn.addEventListener('click', () => {
-                fullNum = [];
-                partNum = [];
-                equalsPressed = false;
-                operatorActive = false;
-                screen.textContent = '';
-              });
+              delBtn.addEventListener('click', deleteAll);
         
         //numbers and number events
         const numButtons = document.querySelectorAll('#num'); 
-              numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
+              numButtons.forEach(a => a.addEventListener('click', () => {
+                   screen.textContent += a.dataset.key; partNum.push(a.dataset.key);
+              } ));
     
         function handleKeys (e){
             let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
             let operators = ['+','-','*','/'];
             if(e.key == 'Backspace') clearUsed();
-            if(operators.includes(e.key)) operatorUsed(e.key);
-            if(e.key == 'Enter' & !equalsPressed) equalsUsed();
+            if(e.key == 'Enter' && !equalsPressed) equalsUsed();
             if(e.key == '.') decimalUsed();
+            if(operators.includes(e.key)) operatorUsed(e.key);
             if(!onlyNums.includes(e.key)) return;
             screen.textContent += e.key; partNum.push(e.key);
+            console.log('partNum = ' + partNum);
         }
         window.addEventListener('keydown', handleKeys);
 
@@ -86,6 +83,7 @@
         operatorActive = true;
     }
     function equalsUsed(){
+        if(partNum[0] == undefined) return;
         equalsPressed = true;
         createEquation();
     }
@@ -93,11 +91,14 @@
         if(!partNum.includes('.') && partNum[0] != undefined){
             partNum.push('.'); screen.textContent += '.';}
     }
+    function deleteAll(){
+        fullNum = []; partNum = []; screen.textContent = ''; equalsPressed = false; operatorActive = false;
+    }
     function clearUsed(){
         if(screen.textContent == '') return;
                 let tempArr = screen.textContent.split(''); // save content
                 tempArr.pop();
-                if(tempArr[0] == '=') tempArr.shift(); // allows for erasing of single digits from answer already given, and can be used for next equation
+                if(tempArr[0] == '='){deleteAll(); return;}
                 screen.textContent = tempArr.join('');
                 fullNum = [];
                 partNum = [];
@@ -114,14 +115,15 @@
                     partNum = [];
                     for (let i = 0; i < screen.textContent.length; i++){ if(i > saveIndex) partNum.push(tempArr[i]);}
                     fullNum.push(partNum.join(''));
-                    partNum = [];
                 }else if(saveIndex == undefined){
                     fullNum.push(screen.textContent);
+                    partNum = [];
                     operatorActive = false;
                 }
                 if(fullNum[1] == '') fullNum.pop(); //Since the numbers get turned into strings when pushed into array, when emptied they are equal to "" instead of undefined.    
                 if(fullNum[0] == '') fullNum.shift(); //these two lines are an easy bandade fix to this problem
-                console.log(fullNum);
+                console.log('partNum = ' + partNum);
+                console.log('fullNum = ' + fullNum);
     }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
