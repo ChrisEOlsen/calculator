@@ -47,8 +47,57 @@
         const screen = document.querySelector('.screen');
         //clear and del button events
         const clearBtn = document.querySelector('.clear'); //An alternative to this method is to have partNum arrays push into a seperate inputHistory array. 
-              clearBtn.addEventListener('click', () => {
-                if(screen.textContent == '') return;
+              clearBtn.addEventListener('click', clearUsed);
+
+        const delBtn = document.querySelector('.del');
+              delBtn.addEventListener('click', () => {
+                fullNum = [];
+                partNum = [];
+                equalsPressed = false;
+                operatorActive = false;
+                screen.textContent = '';
+              });
+        
+        //numbers and number events
+        const numButtons = document.querySelectorAll('#num'); 
+              numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
+    
+        function handleKeys (e){
+            const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+            let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
+            let operators = ['+','-','*','/'];
+            if(e.key == 'Backspace') clearUsed();
+            if(operators.includes(e.key)) operatorUsed(e.key);
+            if(e.key == 'Enter' & !equalsPressed) equalsUsed();
+            if(!onlyNums.includes(e.key)) return;
+            screen.textContent += e.key; partNum.push(e.key);
+        }
+        window.addEventListener('keydown', handleKeys);
+
+        //operators and operator events
+        const operatorButtons = document.querySelectorAll('#op'); 
+              operatorButtons.forEach(a => a.addEventListener('click', () => {
+                    if(a.dataset.key != '=' && a.dataset.key != '.') operatorUsed(a.dataset.key);
+                    else if (a.dataset.key == '=' && !equalsPressed) equalsUsed();
+                    else if (a.dataset.key == '.') decimalUsed();
+              }));
+
+    function operatorUsed(op){
+        equalsPressed = false;
+        currentOperator = op;
+        createEquation();
+        operatorActive = true;
+    }
+    function equalsUsed(){
+        equalsPressed = true;
+        createEquation();
+    }
+    function deciamlUsed(){
+        if(!partNum.includes('.') && partNum[0] != undefined){
+            partNum.push('.'); screen.textContent += '.';}
+    }
+    function clearUsed(){
+        if(screen.textContent == '') return;
                 let tempArr = screen.textContent.split(''); // save content
                 tempArr.pop();
                 if(tempArr[0] == '=') tempArr.shift(); // allows for erasing of single digits from answer already given, and can be used for next equation
@@ -76,57 +125,7 @@
                 if(fullNum[1] == '') fullNum.pop(); //Since the numbers get turned into strings when pushed into array, when emptied they are equal to "" instead of undefined.    
                 if(fullNum[0] == '') fullNum.shift(); //these two lines are an easy bandade fix to this problem
                 console.log(fullNum);
-            });
-        const delBtn = document.querySelector('.del');
-              delBtn.addEventListener('click', () => {
-                fullNum = [];
-                partNum = [];
-                equalsPressed = false;
-                operatorActive = false;
-                screen.textContent = '';
-              });
-        
-        //numbers and number events
-        const numButtons = document.querySelectorAll('#num'); 
-              numButtons.forEach(a => a.addEventListener('click', () => {screen.textContent += a.dataset.key; partNum.push(a.dataset.key)}));
-    
-        function handleKeys (e){
-            const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
-            let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
-            let operators = ['+','-','*','/'];
-            if(operators.includes(e.key)){
-                equalsPressed = false;
-                currentOperator = e.key;
-                createEquation();
-                operatorActive = true;
-            }
-            if(!onlyNums.includes(e.key)) return;
-            screen.textContent += e.key; partNum.push(e.key);
-        }
-        window.addEventListener('keydown', handleKeys);
-
-        //operators and operator events
-        const operatorButtons = document.querySelectorAll('#op'); 
-              operatorButtons.forEach(a => a.addEventListener('click', () => {
-                    if(a.dataset.key != '=' && a.dataset.key != '.'){ // operators
-                        equalsPressed = false;
-                        currentOperator = a.dataset.key;
-                        createEquation();
-                        operatorActive = true;
-                    }
-                    else if (a.dataset.key == '=' && !equalsPressed){ // equals
-                        equalsPressed = true;
-                        createEquation();
-                    }
-                    else if (a.dataset.key == '.'){
-                        if(!partNum.includes('.') && partNum[0] != undefined){ // deciaml
-                            partNum.push('.'); screen.textContent += '.';
-                        }
-                    }
-                    console.log(fullNum);
-              }));
-
-
+    }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
         if(partNum[0] !== undefined)fullNum.push(partNum.join(''));
