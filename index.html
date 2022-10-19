@@ -40,7 +40,7 @@
     let lastOperator;
     let equalsPressed = false;
     let operatorActive = false;
-
+    let operators = ['+','-','*','/'];
         
         //screen
         const screen = document.querySelector('.screen');
@@ -55,7 +55,6 @@
         const negativeBtn = document.querySelector('.negative');
               negativeBtn.addEventListener('click', negativeUsed);
 
-        
         function negativeUsed(){
             if(partNum[0] == '-') return;
             partNum.unshift('-');
@@ -71,17 +70,17 @@
     
         function handleKeys (e){
             let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
-            let operators = ['+','-','*','/'];
             if(e.key == 'Backspace') clearUsed();
             if(e.key == 'Enter' && !equalsPressed) equalsUsed();
             if(e.key == '.') decimalUsed();
+            if(e.key == 'n') negativeUsed();
             if(operators.includes(e.key)) operatorUsed(e.key);
             if(onlyNums.includes(e.key)){ partNum.push(e.key); // very important that this is executed before code below
                                           if(fullNum[1] != undefined && operatorActive){fullNum[1] += e.key;}
                                           else if(fullNum[0] != undefined && !operatorActive){fullNum[0] += e.key; partNum = [];}
                                           screen.textContent += e.key;}
-            console.log(partNum);
-            console.log(fullNum);
+            console.log('partNum = ' +partNum);
+            console.log('fullNum = ' +fullNum);
         }
         window.addEventListener('keydown', handleKeys);
 
@@ -112,38 +111,15 @@
         fullNum = []; partNum = []; screen.textContent = ''; equalsPressed = false; operatorActive = false;
     }
     function clearUsed(){
-        if(screen.textContent == '') return;
-                let tempArr = screen.textContent.split(''); // save content
-                tempArr.pop();
-                if(tempArr[0] == '='){deleteAll(); return;}
-                screen.textContent = tempArr.join('');
-                fullNum = [];
-                partNum = [];
-                let saveIndex;
-                for (let i = 0; i < screen.textContent.length; i++){ // recreate equation based on text on screen
-                    if(screen.textContent[i] == '+' || screen.textContent[i] == '-' || screen.textContent[i] == '/'  ||screen.textContent[i] == '*'){
-                        currentOperator = screen.textContent[i];
-                        saveIndex = i;
-                    }
-                }
-                if(saveIndex != undefined){
-                    for (let i = 0; i < screen.textContent.length; i++){ if(i < saveIndex) partNum.push(tempArr[i]);}
-                    fullNum.push(partNum.join(''));
-                    partNum = [];
-                    for (let i = 0; i < screen.textContent.length; i++){ if(i > saveIndex) partNum.push(tempArr[i]);}
-                    fullNum.push(partNum.join(''));
-                }else if(saveIndex == undefined){
-                    fullNum.push(screen.textContent);
-                    operatorActive = false;
-                    partNum = [];
-                }
-                if(fullNum[1] == '') fullNum.pop(); //Since the numbers get turned into strings when pushed into array, when emptied they are equal to "" instead of undefined.    
-                if(fullNum[0] == '') fullNum.shift(); //these two lines are an easy bandade fix to this problem
+        if(screen.textContent[0] == '='){deleteAll(); equalsPressed = false;}
+        partNum.pop(); screen.textContent = screen.textContent.slice(0, screen.textContent.length - 1);
+        if(operators.includes(screen.textContent[screen.textContent.length - 1])){operatorActive = false;}
+        if(!operatorActive){partNum = screen.textContent.split(''); fullNum[0] = partNum.join('')}
     }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
         if(partNum[0] !== undefined)fullNum.push(partNum.join(''));
-        if(fullNum[0] !== undefined && !operatorActive){ // OR IF THE OPERATOR IS - (this is needed for negative number input)
+        if(fullNum[0] !== undefined && !operatorActive){
             screen.textContent += currentOperator;
             lastOperator = currentOperator;
         }
