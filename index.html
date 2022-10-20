@@ -56,12 +56,21 @@
               negativeBtn.addEventListener('click', negativeUsed);
 
         function negativeUsed(){
-            if(partNum[0] == '-') return;
             if(!operatorActive){
-                let original = fullNum[0];
-                fullNum[0] = '-'+original;
-                screen.textContent = fullNum[0];
+                let check = fullNum[0];
+                if(typeof(check) == 'string' && check[0] == '-') return;
+
+                let original;
+                if(fullNum[0] != undefined){
+                    original = fullNum[0];
+                }else {
+                    original = partNum.join('');
+                    partNum = [];
+                }
+                    fullNum[0] = '-'+original;
+                    screen.textContent = fullNum[0];
             }else if(operatorActive){
+                if(partNum[0] == '-') return;
                 partNum.unshift('-');
                 screen.textContent = screen.textContent.slice(0,screen.textContent.length - partNum.length + 1);
                 screen.textContent += partNum.join('');  
