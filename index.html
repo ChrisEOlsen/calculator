@@ -11,9 +11,9 @@
     <div class="case">
         <div class="screen"></div>
             <div class="button-container">
-                <button class="negative">+/-</button>
                 <button class="clear">CLEAR</button>
                 <button class="del">DELETE</button>
+                <button class="negative">+/-</button>
                 <button id="num" data-key="7">7</button>
                 <button id="num" data-key="8">8</button>
                 <button id="num" data-key="9">9</button>
@@ -82,7 +82,7 @@
                                       else if(fullNum[0] != undefined && !operatorActive){fullNum[0] += e.key; partNum = [];}
                                       screen.textContent += e.key;}
     }
-        window.addEventListener('keydown', handleKeys);
+    window.addEventListener('keydown', handleKeys);
 
     function negativeUsed(){
         if(!operatorActive){
@@ -133,7 +133,7 @@
     }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
-        if(partNum[0] != undefined)fullNum.push(partNum.join(''));
+        if(partNum[0] != undefined) fullNum.push(partNum.join(''));
         if(fullNum[0] != undefined && !operatorActive){
             screen.textContent += currentOperator;
             lastOperator = currentOperator;
