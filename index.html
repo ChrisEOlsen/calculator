@@ -112,20 +112,22 @@
     }
     function clearUsed(){
         if(screen.textContent[0] == '='){deleteAll(); equalsPressed = false;}
-        partNum.pop(); screen.textContent = screen.textContent.slice(0, screen.textContent.length - 1);
-        if(operators.includes(screen.textContent[screen.textContent.length - 1])){operatorActive = false;}
-        if(!operatorActive){partNum = screen.textContent.split(''); fullNum[0] = partNum.join('')}
+        let eraseOne = screen.textContent.slice(0, screen.textContent.length - 1);
+        if(operatorActive){partNum.pop();} //after operator
+        if(!operatorActive){fullNum[0] = eraseOne;}//before operator
+        if(partNum[0] == undefined){operatorActive = false;} //on operator
+        screen.textContent = eraseOne;
     }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
-        if(partNum[0] !== undefined)fullNum.push(partNum.join(''));
-        if(fullNum[0] !== undefined && !operatorActive){
+        if(partNum[0] != undefined)fullNum.push(partNum.join(''));
+        if(fullNum[0] != undefined && !operatorActive){
             screen.textContent += currentOperator;
             lastOperator = currentOperator;
         }
         partNum = []; //important that partNum is emptied
 
-        if(fullNum[1] !== undefined){
+        if(fullNum[1] != undefined){
             let answer = operate(lastOperator, fullNum[0], fullNum[1]);
             fullNum = [];
             fullNum.push(answer);
