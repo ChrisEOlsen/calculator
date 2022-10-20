@@ -47,35 +47,12 @@
         //clear and del button events
         const clearBtn = document.querySelector('.clear'); //An alternative to this method is to have partNum arrays push into a seperate inputHistory array. 
               clearBtn.addEventListener('click', clearUsed);
-
         const delBtn = document.querySelector('.del');
               delBtn.addEventListener('click', deleteAll);
 
         //negative number button events
         const negativeBtn = document.querySelector('.negative');
               negativeBtn.addEventListener('click', negativeUsed);
-
-        function negativeUsed(){
-            if(!operatorActive){
-                let check = fullNum[0];
-                if(typeof(check) == 'string' && check[0] == '-') return;
-
-                let original;
-                if(fullNum[0] != undefined){
-                    original = fullNum[0];
-                }else {
-                    original = partNum.join('');
-                    partNum = [];
-                }
-                    fullNum[0] = '-'+original;
-                    screen.textContent = fullNum[0];
-            }else if(operatorActive){
-                if(partNum[0] == '-') return;
-                partNum.unshift('-');
-                screen.textContent = screen.textContent.slice(0,screen.textContent.length - partNum.length + 1);
-                screen.textContent += partNum.join('');  
-            }                  
-        }
         
         //numbers and number events
         const numButtons = document.querySelectorAll('#num'); 
@@ -83,21 +60,6 @@
                    screen.textContent += a.dataset.key; partNum.push(a.dataset.key);
               } ));
     
-        function handleKeys (e){
-            let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
-            if(e.key == 'Backspace') clearUsed();
-            if(e.key == 'Enter' && !equalsPressed) equalsUsed();
-            if(e.key == '.') decimalUsed();
-            if(e.key == 'n') negativeUsed();
-            if(operators.includes(e.key)) operatorUsed(e.key);
-            if(onlyNums.includes(e.key)){ partNum.push(e.key); // very important that this is executed before code below
-                                          if(fullNum[1] != undefined && operatorActive){fullNum[1] += e.key;}
-                                          else if(fullNum[0] != undefined && !operatorActive){fullNum[0] += e.key; partNum = [];}
-                                          screen.textContent += e.key;}
-            console.log('partNum = ' +partNum);
-            console.log('fullNum = ' +fullNum);
-        }
-        window.addEventListener('keydown', handleKeys);
 
         //operators and operator events
         const operatorButtons = document.querySelectorAll('#op'); 
@@ -107,6 +69,42 @@
                     else if (a.dataset.key == '.') decimalUsed();
               }));
 
+
+    function handleKeys (e){
+        let onlyNums = ['0','1','2','3','4','5','6','7','8','9'];
+        if(e.key == 'Backspace') clearUsed();
+        if(e.key == 'Enter' && !equalsPressed) equalsUsed();
+        if(e.key == '.') decimalUsed();
+        if(e.key == 'n') negativeUsed();
+        if(operators.includes(e.key)) operatorUsed(e.key);
+        if(onlyNums.includes(e.key)){ partNum.push(e.key); // very important that this is executed before code below
+                                      if(fullNum[1] != undefined && operatorActive){fullNum[1] += e.key;}
+                                      else if(fullNum[0] != undefined && !operatorActive){fullNum[0] += e.key; partNum = [];}
+                                      screen.textContent += e.key;}
+    }
+        window.addEventListener('keydown', handleKeys);
+
+    function negativeUsed(){
+        if(!operatorActive){
+            let check = fullNum[0];
+            if(typeof(check) == 'string' && check[0] == '-') return;
+
+            let original;
+            if(fullNum[0] != undefined){
+                original = fullNum[0];
+            }else {
+                original = partNum.join('');
+                partNum = [];
+            }
+                fullNum[0] = '-'+original;
+                screen.textContent = fullNum[0];
+        }else if(operatorActive){
+                if(partNum[0] == '-') return;
+                partNum.unshift('-');
+                screen.textContent = screen.textContent.slice(0,screen.textContent.length - partNum.length + 1);
+                screen.textContent += partNum.join('');  
+        }                  
+    }
     function operatorUsed(op){
         equalsPressed = false;
         currentOperator = op;
