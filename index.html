@@ -57,9 +57,15 @@
 
         function negativeUsed(){
             if(partNum[0] == '-') return;
-            partNum.unshift('-');
-            screen.textContent = screen.textContent.slice(0,screen.textContent.length - partNum.length + 1);
-            screen.textContent += partNum.join('');                    
+            if(!operatorActive){
+                let original = fullNum[0];
+                fullNum[0] = '-'+original;
+                screen.textContent = fullNum[0];
+            }else if(operatorActive){
+                partNum.unshift('-');
+                screen.textContent = screen.textContent.slice(0,screen.textContent.length - partNum.length + 1);
+                screen.textContent += partNum.join('');  
+            }                  
         }
         
         //numbers and number events
