@@ -41,32 +41,32 @@
     let equalsPressed = false;
     let operatorActive = false;
         
-        //screen
-        const screen = document.querySelector('.screen');
-        //clear and del button events
-        const clearBtn = document.querySelector('.clear'); //An alternative to this method is to have partNum arrays push into a seperate inputHistory array. 
-              clearBtn.addEventListener('click', clearUsed);
-        const delBtn = document.querySelector('.del');
-              delBtn.addEventListener('click', deleteAll);
+    //screen
+    const screen = document.querySelector('.screen');
+    //clear and del button events
+    const clearBtn = document.querySelector('.clear'); //An alternative to this method is to have partNum arrays push into a seperate inputHistory array. 
+          clearBtn.addEventListener('click', clearUsed);
+    const delBtn = document.querySelector('.del');
+          delBtn.addEventListener('click', deleteAll);
 
-        //negative number button events
-        const negativeBtn = document.querySelector('.negative');
-              negativeBtn.addEventListener('click', negativeUsed);
+    //negative number button events
+    const negativeBtn = document.querySelector('.negative');
+          negativeBtn.addEventListener('click', negativeUsed);
         
-        //numbers and number events
-        const numButtons = document.querySelectorAll('#num'); 
-              numButtons.forEach(a => a.addEventListener('click', () => {
-                   screen.textContent += a.dataset.key; partNum.push(a.dataset.key);
-              } ));
+    //numbers and number events
+    const numButtons = document.querySelectorAll('#num'); 
+          numButtons.forEach(a => a.addEventListener('click', () => {
+               screen.textContent += a.dataset.key; partNum.push(a.dataset.key);
+          }));
     
 
-        //operators and operator events
-        const operatorButtons = document.querySelectorAll('#op'); 
-              operatorButtons.forEach(a => a.addEventListener('click', () => {
-                    if(a.dataset.key != '=' && a.dataset.key != '.') operatorUsed(a.dataset.key);
-                    else if (a.dataset.key == '=' && !equalsPressed) equalsUsed();
-                    else if (a.dataset.key == '.') decimalUsed();
-              }));
+    //operators and operator events
+    const operatorButtons = document.querySelectorAll('#op'); 
+          operatorButtons.forEach(a => a.addEventListener('click', () => {
+                if(a.dataset.key != '=' && a.dataset.key != '.') operatorUsed(a.dataset.key);
+                else if (a.dataset.key == '=' && !equalsPressed) equalsUsed();
+                else if (a.dataset.key == '.') decimalUsed();
+          }));
 
 
     function handleKeys (e){
