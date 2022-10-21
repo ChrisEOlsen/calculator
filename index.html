@@ -87,7 +87,6 @@
     window.addEventListener('keydown', handleKeys);
 
     function negativeUsed(){
-        if(screen.textContent[0] == '=') return;
         if(operatorActive){
             if(partNum[0] == '-') return;
             partNum.unshift('-');
