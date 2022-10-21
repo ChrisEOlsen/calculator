@@ -87,6 +87,7 @@
     window.addEventListener('keydown', handleKeys);
 
     function negativeUsed(){
+        if(screen.textContent[0] == '=') return;
         if(operatorActive){
             if(partNum[0] == '-') return;
             partNum.unshift('-');
@@ -106,7 +107,7 @@
             }
                 fullNum[0] = '-'+original;
                 screen.textContent = fullNum[0];
-        }         
+        }
         console.log(fullNum);
         console.log(partNum);
     }
