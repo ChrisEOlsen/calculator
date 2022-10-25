@@ -80,7 +80,8 @@
         if(e.key == '.') decimalUsed();
         if(e.key == 'n') negativeUsed();
         if(operators.includes(e.key)) operatorUsed(e.key);
-        if(onlyNums.includes(e.key)){ partNum.push(e.key); // very important that this is executed before code below
+        if(onlyNums.includes(e.key)){ if(screen.textContent == '=0') screen.textContent = '=';
+                                      partNum.push(e.key); // very important that this is executed before code below
                                       if(fullNum[1] != undefined && operatorActive){fullNum[1] += e.key;}
                                       else if(fullNum[0] != undefined && !operatorActive){fullNum[0] += e.key; partNum = [];}
                                       screen.textContent += e.key;}
@@ -112,8 +113,6 @@
             screen.textContent =  screen.textContent.slice(1,screen.textContent.length);
             fullNum[0] = screen.textContent;
         }
-        console.log(fullNum);
-        console.log(partNum); 
     }
     function operatorUsed(op){
         equalsPressed = false;
@@ -127,8 +126,9 @@
         createEquation();
     }
     function decimalUsed(){
-        if(!partNum.includes('.') && partNum[0] != undefined){
-            partNum.push('.'); screen.textContent += '.';}
+        if(partNum[0] != undefined && !partNum.includes('.')){
+            partNum.push('.'); screen.textContent += '.';
+        }
     }
     function deleteAll(){
         fullNum = []; partNum = []; screen.textContent = ''; equalsPressed = false; operatorActive = false;
@@ -140,6 +140,7 @@
         if(!operatorActive){fullNum[0] = eraseOne;}//before operator
         if(partNum[0] == undefined){operatorActive = false;} //on operator
         screen.textContent = eraseOne;
+        if(fullNum[0] == '') fullNum = []; 
     }
     function createEquation(){ //Input limitation is based on whether partNum and fullNum arrays are undefined.
         if(currentOperator == undefined) return;
