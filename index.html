@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
     <div class="controls">Input 'n' for negative numbers</div>
     <div class="case">
         <div class="screen"></div>
@@ -107,8 +108,12 @@
                 fullNum[0] = '-'+original;
                 screen.textContent = fullNum[0];
         }
+        if(screen.textContent[0] == '-' && screen.textContent[1] == '-'){
+            screen.textContent =  screen.textContent.slice(1,screen.textContent.length);
+            fullNum[0] = screen.textContent;
+        }
         console.log(fullNum);
-        console.log(partNum);
+        console.log(partNum); 
     }
     function operatorUsed(op){
         equalsPressed = false;
