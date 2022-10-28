@@ -128,7 +128,14 @@
     function decimalUsed(){
         if(partNum[0] != undefined && !partNum.includes('.')){
             partNum.push('.'); screen.textContent += '.';
+        }else if(fullNum[0] != undefined){
+            let tempArr = fullNum[0].split('');
+            if(tempArr.includes('.')) return;
+            fullNum[0] += '.';
+            screen.textContent = fullNum[0];
         }
+        console.log(partNum);
+        console.log(fullNum);
     }
     function deleteAll(){
         fullNum = []; partNum = []; screen.textContent = ''; equalsPressed = false; operatorActive = false;
