@@ -143,8 +143,7 @@
     function clearUsed(){
         if(screen.textContent[0] == '='){deleteAll(); equalsPressed = false;}
         let eraseOne = screen.textContent.slice(0, screen.textContent.length - 1);
-        if(operatorActive){partNum.pop();} //after operator
-        if(!operatorActive){fullNum[0] = eraseOne;}//before operator
+        operatorActive == true ? partNum.pop() : fullNum[0] = eraseOne; //before and after operator
         if(partNum[0] == undefined){operatorActive = false;} //on operator
         screen.textContent = eraseOne;
         if(fullNum[0] == '') fullNum = []; 
