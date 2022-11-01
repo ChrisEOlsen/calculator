@@ -78,7 +78,7 @@
         if(e.key == 'Backspace') clearUsed();
         if(e.key == 'Enter' && !equalsPressed) equalsUsed();
         if(e.key == '.') decimalUsed();
-        if(e.key == 'n') negativeUsed();
+        if(e.key == 'n' || e.key == 'N') negativeUsed();
         if(operators.includes(e.key)) operatorUsed(e.key);
         if(onlyNums.includes(e.key)){ if(screen.textContent == '=0') screen.textContent = '=';
                                       partNum.push(e.key); // very important that this is executed before code below
